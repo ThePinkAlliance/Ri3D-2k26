@@ -84,7 +84,7 @@ public class RobotContainer {
         .a()
         //.whileTrue(collectorSubsystem.setCollectorSpeedCommand(0.25))
         //.onFalse(collectorSubsystem.setCollectorSpeedCommand(0));
-        .whileTrue(collectorSubsystem.setCollectorPitchCommand(5));
+        .whileTrue(collectorSubsystem.setCollectorPitchCommand(8.7));
     joystick
         .b()
         //.whileTrue(collectorSubsystem.setCollectorSpeedCommand(0.25))
