@@ -20,20 +20,23 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
-public class ClimberPair extends SubsystemBase {
-  private SparkMax rachetingClimber;
+public class Climbers extends SubsystemBase {
+  private SparkMax rachetingClimberLeft, rachetingClimberRight;
   private TalonFX extendingClimber;
 
   /** Creates a new Climbers. */
-  public ClimberPair(int rachetingClimberId, int extendingClimberId) {
-    this.rachetingClimber = new SparkMax(rachetingClimberId, MotorType.kBrushless);
+  public Climbers(int rachetingClimberLeftId, int rachetingClimberRightId, int extendingClimberId) {
+    this.rachetingClimberLeft = new SparkMax(rachetingClimberLeftId, MotorType.kBrushless);
+    this.rachetingClimberRight = new SparkMax(rachetingClimberRightId, MotorType.kBrushless);
     this.extendingClimber = new TalonFX(extendingClimberId, CANBus.roboRIO());
   }
 
   public void configureRachetingClimber() {
     SparkMaxConfig config = new SparkMaxConfig();
 
-    this.rachetingClimber.configure(
+    this.rachetingClimberRight.configure(
+        config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    this.rachetingClimberLeft.configure(
         config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
@@ -48,7 +51,8 @@ public class ClimberPair extends SubsystemBase {
   }
 
   public void setRachetingClimberSetpoint(double position) {
-    this.rachetingClimber.getClosedLoopController().setSetpoint(position, ControlType.kPosition);
+    this.rachetingClimberLeft.getClosedLoopController().setSetpoint(position, ControlType.kPosition);
+    this.rachetingClimberRight.getClosedLoopController().setSetpoint(position, ControlType.kPosition);
   }
 
   public void setExtendingClimberSetpoint(double position) {
@@ -67,8 +71,25 @@ public class ClimberPair extends SubsystemBase {
     return this.extendingClimber.getPosition().getValueAsDouble();
   }
 
-  public double getRachetingClimberPosition() {
-    return this.rachetingClimber.getEncoder().getPosition();
+  public double getRachetingClimberRightPosition() {
+    return this.rachetingClimberRight.getEncoder().getPosition();
+  }
+
+  public double getRachetingClimberLeftPosition() {
+    return this.rachetingClimberLeft.getEncoder().getPosition();
+  }
+
+  public void setExtendingClimberPower(double speed) {
+    this.extendingClimber.set(speed);
+  }
+
+  public void setRachetingClimberPower(double speed) {
+    this.rachetingClimberLeft.set(speed);
+    this.rachetingClimberRight.set(speed);
+  }
+
+  public Command setRachetingClimberPowerCommand(double power) {
+    return Commands.runOnce(() -> setRachetingClimberPower(power), this);
   }
 
   @Override
@@ -76,10 +97,13 @@ public class ClimberPair extends SubsystemBase {
     // This method will be called once per scheduler run
 
     Logger.recordOutput(
-        "Climbers/racheting-" + rachetingClimber.getDeviceId() + "/position",
-        rachetingClimber.getEncoder().getPosition());
+        "Climbers/racheting-left-" + rachetingClimberLeft.getDeviceId() + "/position",
+        rachetingClimberLeft.getEncoder().getPosition());
     Logger.recordOutput(
-        "Climbers/extending-" + rachetingClimber.getDeviceId() + "/position",
+        "Climbers/racheting-right-" + rachetingClimberRight.getDeviceId() + "/position",
+        rachetingClimberRight.getEncoder().getPosition());
+    Logger.recordOutput(
+        "Climbers/extending-" + extendingClimber.getDeviceID() + "/position",
         extendingClimber.getPosition().getValueAsDouble());
   }
 }

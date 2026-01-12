@@ -14,8 +14,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.ClimberJoystickControl;
 import frc.robot.commands.ShooterTuner;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Climbers;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Shooter;
@@ -40,6 +42,7 @@ public class RobotContainer {
 
   private final Shooter shooterSubsystem = new Shooter();
   private final Collector collectorSubsystem = new Collector();
+  private final Climbers climberSubsystem = new Climbers(0, 0, 0);
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
   private final CommandXboxController joystick = new CommandXboxController(0);
@@ -71,6 +74,8 @@ public class RobotContainer {
     final var idle = new SwerveRequest.Idle();
     RobotModeTriggers.disabled()
         .whileTrue(drivetrain.applyRequest(() -> idle).ignoringDisable(true));
+
+    climberSubsystem.setDefaultCommand(new ClimberJoystickControl(() -> joystick.getLeftY(), () -> joystick.getRightY(), climberSubsystem));
 
     joystick
         .povUp()
