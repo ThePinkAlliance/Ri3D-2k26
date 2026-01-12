@@ -6,10 +6,10 @@ package frc.robot.subsystems;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
-import com.revrobotics.spark.SparkFlex;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,7 +25,8 @@ public class Collector extends SubsystemBase {
   /** Creates a new Collector. */
   public Collector() {
     this.collectorMotor = new SparkFlex(Constants.COLLECTOR_MOTOR_ID, MotorType.kBrushless);
-    this.collectorPitchMotor = new SparkMax(Constants.COLLECTOR_PITCH_MOTOR_ID, MotorType.kBrushless);
+    this.collectorPitchMotor =
+        new SparkMax(Constants.COLLECTOR_PITCH_MOTOR_ID, MotorType.kBrushless);
 
     configureMotor();
     configureCollectorPitch();
@@ -34,13 +35,15 @@ public class Collector extends SubsystemBase {
   private void configureMotor() {
     SparkMaxConfig config = new SparkMaxConfig();
 
-    this.collectorMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    this.collectorMotor.configure(
+        config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   private void configureCollectorPitch() {
     SparkFlexConfig config = new SparkFlexConfig();
 
-    this.collectorPitchMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    this.collectorPitchMotor.configure(
+        config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   public void setCollectorSpeed(double speed) {
@@ -63,6 +66,8 @@ public class Collector extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    Logger.recordOutput("Collector/Collector Angle", this.collectorPitchMotor.getEncoder().getPosition());
+    Logger.recordOutput(
+        "Collector/Angle", this.collectorPitchMotor.getEncoder().getPosition());
+    Logger.recordOutput("Collector/Velocity", this.collectorMotor.getEncoder().getVelocity());
   }
 }

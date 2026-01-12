@@ -32,7 +32,6 @@ public class Robot extends LoggedRobot {
   private final HootAutoReplay m_timeAndJoystickReplay =
       new HootAutoReplay().withTimestampReplay().withJoystickReplay();
 
-
   public Robot() {
     this.m_robotContainer = new RobotContainer();
 
@@ -70,7 +69,6 @@ public class Robot extends LoggedRobot {
         Logger.setReplaySource(new WPILOGReader(logPath));
         Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
         break;
-
     }
 
     // Start AdvantageKit logger

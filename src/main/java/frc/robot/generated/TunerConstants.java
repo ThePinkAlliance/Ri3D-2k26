@@ -71,7 +71,7 @@ public class TunerConstants {
                   .withStatorCurrentLimitEnable(true));
   private static final CANcoderConfiguration encoderInitialConfigs = new CANcoderConfiguration();
   // Configs for the Pigeon 2; leave this null to skip applying Pigeon 2 configs
-  private static final Pigeon2Configuration pigeonConfigs = new Pigeon2Configuration().withMountPose(new MountPoseConfigs().withMountPoseYaw(180));
+  private static final Pigeon2Configuration pigeonConfigs = null;
 
   // CAN bus that the devices are located on;
   // All swerve devices must share the same CAN bus
@@ -148,7 +148,7 @@ public class TunerConstants {
   private static final int kFrontRightDriveMotorId = 16;
   private static final int kFrontRightSteerMotorId = 15;
   private static final int kFrontRightEncoderId = 3;
-  private static final Angle kFrontRightEncoderOffset = Rotations.of(-0.478759765625);
+  private static final Angle kFrontRightEncoderOffset = Rotations.of(-0.476318359375);
   private static final boolean kFrontRightSteerMotorInverted = false;
   private static final boolean kFrontRightEncoderInverted = true;
 
@@ -159,7 +159,7 @@ public class TunerConstants {
   private static final int kBackLeftDriveMotorId = 12;
   private static final int kBackLeftSteerMotorId = 11;
   private static final int kBackLeftEncoderId = 1;
-  private static final Angle kBackLeftEncoderOffset = Rotations.of(-0.215576171875);
+  private static final Angle kBackLeftEncoderOffset = Rotations.of(-0.214111328125);
   private static final boolean kBackLeftSteerMotorInverted = false;
   private static final boolean kBackLeftEncoderInverted = true;
 
@@ -170,7 +170,7 @@ public class TunerConstants {
   private static final int kBackRightDriveMotorId = 14;
   private static final int kBackRightSteerMotorId = 13;
   private static final int kBackRightEncoderId = 2;
-  private static final Angle kBackRightEncoderOffset = Rotations.of(0.244140625);
+  private static final Angle kBackRightEncoderOffset = Rotations.of(0.243896484375);
   private static final boolean kBackRightSteerMotorInverted = false;
   private static final boolean kBackRightEncoderInverted = true;
 
@@ -289,9 +289,9 @@ public class TunerConstants {
      * @param odometryUpdateFrequency The frequency to run the odometry loop. If unspecified or set
      *     to 0 Hz, this is 250 Hz on CAN FD, and 100 Hz on CAN 2.0.
      * @param odometryStandardDeviation The standard deviation for odometry calculation in the form
-     *     [x, y, theta]ᵀ, with units in meters and radians
+     *     [x, y, theta]áµ€, with units in meters and radians
      * @param visionStandardDeviation The standard deviation for vision calculation in the form [x,
-     *     y, theta]ᵀ, with units in meters and radians
+     *     y, theta]áµ€, with units in meters and radians
      * @param modules Constants for each specific module
      */
     public TunerSwerveDrivetrain(

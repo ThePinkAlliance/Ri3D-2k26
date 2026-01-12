@@ -31,5 +31,5 @@ public final class Constants {
 
   public static final int COLLECTOR_MOTOR_ID = 0;
   public static final int COLLECTOR_PITCH_MOTOR_ID = 0;
-  public static final int SHOOTER_MOTOR_ID = 0;
+  public static final int SHOOTER_MOTOR_ID = 20;
 }
