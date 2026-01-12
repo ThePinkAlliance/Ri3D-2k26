@@ -29,6 +29,9 @@ public class Climbers extends SubsystemBase {
     this.rachetingClimberLeft = new SparkMax(rachetingClimberLeftId, MotorType.kBrushless);
     this.rachetingClimberRight = new SparkMax(rachetingClimberRightId, MotorType.kBrushless);
     this.extendingClimber = new TalonFX(extendingClimberId, CANBus.roboRIO());
+
+    configureExtendingClimber();
+    configureRachetingClimber();
   }
 
   public void configureRachetingClimber() {
@@ -51,8 +54,12 @@ public class Climbers extends SubsystemBase {
   }
 
   public void setRachetingClimberSetpoint(double position) {
-    this.rachetingClimberLeft.getClosedLoopController().setSetpoint(position, ControlType.kPosition);
-    this.rachetingClimberRight.getClosedLoopController().setSetpoint(position, ControlType.kPosition);
+    this.rachetingClimberLeft
+        .getClosedLoopController()
+        .setSetpoint(position, ControlType.kPosition);
+    this.rachetingClimberRight
+        .getClosedLoopController()
+        .setSetpoint(position, ControlType.kPosition);
   }
 
   public void setExtendingClimberSetpoint(double position) {

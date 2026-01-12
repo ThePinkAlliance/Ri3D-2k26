@@ -37,15 +37,14 @@ public class RobotContainer {
           .withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
           .withDriveRequestType(
               DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-  private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-  private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
   private final Shooter shooterSubsystem = new Shooter();
   private final Collector collectorSubsystem = new Collector();
-  private final Climbers climberSubsystem = new Climbers(0, 0, 0);
+  private final Climbers climberSubsystem = new Climbers(41, 44, 24);
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
-  private final CommandXboxController joystick = new CommandXboxController(0);
+  private final CommandXboxController joystickBase = new CommandXboxController(0);
+  private final CommandXboxController joystickTower = new CommandXboxController(1);
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
   public RobotContainer() {
@@ -61,11 +60,12 @@ public class RobotContainer {
             () ->
                 drive
                     .withVelocityX(
-                        joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                        joystickBase.getLeftY()
+                            * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(
-                        joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                        joystickBase.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(
-                        joystick.getRightX()
+                        joystickBase.getRightX()
                             * MaxAngularRate) // Drive counterclockwise with negative X (left)
             ));
 
@@ -75,35 +75,49 @@ public class RobotContainer {
     RobotModeTriggers.disabled()
         .whileTrue(drivetrain.applyRequest(() -> idle).ignoringDisable(true));
 
-    climberSubsystem.setDefaultCommand(new ClimberJoystickControl(() -> joystick.getLeftY(), () -> joystick.getRightY(), climberSubsystem));
+    climberSubsystem.setDefaultCommand(
+        new ClimberJoystickControl(
+            () -> joystickTower.getLeftY(), () -> joystickTower.getRightY(), climberSubsystem));
 
-    joystick
+    joystickBase
         .povUp()
         .whileTrue(new ShooterTuner(positionEditable, shooterSubsystem))
         .onFalse(shooterSubsystem.disengageCommand());
 
-    joystick
+    joystickBase
         .x()
         .whileTrue(shooterSubsystem.setMotorSpeedCommand(1))
         .onFalse(shooterSubsystem.disengageCommand());
 
-    joystick
+    joystickBase
         .rightBumper()
         .whileTrue(collectorSubsystem.setCollectorSpeedCommand(0.25))
         .onFalse(collectorSubsystem.setCollectorSpeedCommand(0));
 
-    joystick.a().whileTrue(collectorSubsystem.setCollectorPitchCommand(8.35));
-    joystick.b().whileTrue(collectorSubsystem.setCollectorPitchCommand(0));
+    joystickBase.a().whileTrue(collectorSubsystem.setCollectorPitchCommand(8.35));
+    joystickBase.b().whileTrue(collectorSubsystem.setCollectorPitchCommand(0));
 
     // Run SysId routines when holding back/start and X/Y.
     // Note that each routine should be run exactly once in a single log.
-    joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-    joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-    joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-    joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+    joystickBase
+        .back()
+        .and(joystickBase.y())
+        .whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+    joystickBase
+        .back()
+        .and(joystickBase.x())
+        .whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+    joystickBase
+        .start()
+        .and(joystickBase.y())
+        .whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+    joystickBase
+        .start()
+        .and(joystickBase.x())
+        .whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
     // Reset the field-centric heading on left bumper press.
-    joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+    joystickBase.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
     drivetrain.registerTelemetry(logger::telemeterize);
   }

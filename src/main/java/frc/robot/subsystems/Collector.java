@@ -9,7 +9,6 @@ import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -20,14 +19,14 @@ import frc.robot.Constants;
 import org.littletonrobotics.junction.Logger;
 
 public class Collector extends SubsystemBase {
-  private SparkMax collectorPitchMotor;
+  private SparkFlex collectorPitchMotor;
   private SparkFlex collectorMotor;
 
   /** Creates a new Collector. */
   public Collector() {
     this.collectorMotor = new SparkFlex(Constants.COLLECTOR_MOTOR_ID, MotorType.kBrushless);
     this.collectorPitchMotor =
-        new SparkMax(Constants.COLLECTOR_PITCH_MOTOR_ID, MotorType.kBrushless);
+        new SparkFlex(Constants.COLLECTOR_PITCH_MOTOR_ID, MotorType.kBrushless);
 
     configureMotor();
     configureCollectorPitch();
