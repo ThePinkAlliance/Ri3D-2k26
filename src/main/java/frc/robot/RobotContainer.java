@@ -14,12 +14,14 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.ShooterTuner;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
+  private EditableDouble positionEditable = new EditableDouble("Shooter Speed", 50);
   private double MaxSpeed =
       1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
   private double MaxAngularRate =
@@ -56,11 +58,11 @@ public class RobotContainer {
             () ->
                 drive
                     .withVelocityX(
-                        -joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                        joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(
-                        -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                        joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(
-                        -joystick.getRightX()
+                        joystick.getRightX()
                             * MaxAngularRate) // Drive counterclockwise with negative X (left)
             ));
 
@@ -72,17 +74,7 @@ public class RobotContainer {
 
     joystick
         .povUp()
-        .whileTrue(shooterSubsystem.setShooterVelocityCommand(80))
-        .onFalse(shooterSubsystem.disengageCommand());
-
-    joystick
-        .povUp()
-        .whileTrue(shooterSubsystem.setShooterVelocityCommand(50))
-        .onFalse(shooterSubsystem.disengageCommand());
-
-    joystick
-        .povUp()
-        .whileTrue(shooterSubsystem.setShooterVelocityCommand(70))
+        .whileTrue(new ShooterTuner(positionEditable, shooterSubsystem))
         .onFalse(shooterSubsystem.disengageCommand());
 
     joystick
@@ -91,7 +83,7 @@ public class RobotContainer {
         .onFalse(shooterSubsystem.disengageCommand());
 
     joystick
-        .leftBumper()
+        .rightBumper()
         .whileTrue(collectorSubsystem.setCollectorSpeedCommand(0.25))
         .onFalse(collectorSubsystem.setCollectorSpeedCommand(0));
 
