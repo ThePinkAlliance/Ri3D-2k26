@@ -10,6 +10,7 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -42,6 +43,13 @@ public class Collector extends SubsystemBase {
   private void configureCollectorPitch() {
     SparkFlexConfig config = new SparkFlexConfig();
 
+    config.inverted(true);
+    config.idleMode(IdleMode.kBrake);
+    config.closedLoop.p(0.5);
+
+    // Reset collector pitch motor postiion.
+    this.collectorPitchMotor.getEncoder().setPosition(0);
+
     this.collectorPitchMotor.configure(
         config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
@@ -66,8 +74,7 @@ public class Collector extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    Logger.recordOutput(
-        "Collector/Angle", this.collectorPitchMotor.getEncoder().getPosition());
+    Logger.recordOutput("Collector/Angle", this.collectorPitchMotor.getEncoder().getPosition());
     Logger.recordOutput("Collector/Velocity", this.collectorMotor.getEncoder().getVelocity());
   }
 }

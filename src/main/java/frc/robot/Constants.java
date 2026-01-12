@@ -29,7 +29,7 @@ public final class Constants {
     REPLAY
   }
 
-  public static final int COLLECTOR_MOTOR_ID = 0;
-  public static final int COLLECTOR_PITCH_MOTOR_ID = 0;
+  public static final int COLLECTOR_MOTOR_ID = 23;
+  public static final int COLLECTOR_PITCH_MOTOR_ID = 21;
   public static final int SHOOTER_MOTOR_ID = 20;
 }
