@@ -45,7 +45,9 @@ public class Collector extends SubsystemBase {
 
     config.inverted(true);
     config.idleMode(IdleMode.kBrake);
-    config.closedLoop.p(0.5);
+    config.closedLoop.p(0.12);
+    config.closedLoop.maxOutput(0.25);
+    config.closedLoop.minOutput(-0.25);
 
     // Reset collector pitch motor postiion.
     this.collectorPitchMotor.getEncoder().setPosition(0);

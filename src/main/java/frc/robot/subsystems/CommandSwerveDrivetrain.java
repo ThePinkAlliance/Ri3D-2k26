@@ -228,6 +228,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     Logger.recordOutput("Drivetrain/Gyro", (getRotation3d().getAngle() * (180 / Math.PI)));
     Logger.recordOutput("Drivetrain/Chassis_speeds", getState().Speeds);
+    Logger.recordOutput("Drivetrain/States", getState().ModuleStates);
   }
 
   private void startSimThread() {
