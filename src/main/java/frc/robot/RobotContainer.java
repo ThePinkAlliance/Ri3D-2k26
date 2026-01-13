@@ -23,7 +23,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
-  private EditableDouble positionEditable = new EditableDouble("Shooter Speed", 50);
+  private EditableDouble positionEditable = new EditableDouble("Shooter Speed", 80);
   private double MaxSpeed =
       1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
   private double MaxAngularRate =
@@ -33,8 +33,8 @@ public class RobotContainer {
   /* Setting up bindings for necessary control of the swerve drive platform */
   private final SwerveRequest.FieldCentric drive =
       new SwerveRequest.FieldCentric()
-          .withDeadband(MaxSpeed * 0.1)
-          .withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+          .withDeadband(MaxSpeed * 0.05)
+          .withRotationalDeadband(MaxAngularRate * 0.05) // Add a 10% deadband
           .withDriveRequestType(
               DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
 
