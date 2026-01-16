@@ -90,6 +90,15 @@ public class Climbers extends SubsystemBase {
     this.extendingClimber.set(speed);
   }
 
+  public void resetRachetClimberPosition() {
+    setRachetClimberPosition(0, 0);
+  }
+
+  public void setRachetClimberPosition(double positionLeft, double positionRight) {
+    this.rachetingClimberLeft.getEncoder().setPosition(positionLeft);
+    this.rachetingClimberRight.getEncoder().setPosition(positionRight);
+  }
+
   public void setRachetingClimberPower(double speed) {
     this.rachetingClimberLeft.set(speed);
     this.rachetingClimberRight.set(speed);
